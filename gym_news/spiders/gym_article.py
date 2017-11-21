@@ -14,21 +14,13 @@ class GymArticleSpider(CrawlSpider):
     self.logger.info('==> %s', response.url)
     url = response.url
     #id = re.compile(".*/(\d+).epi").match(url).groups()[0]
-    title = response.xpath("//div[@class='boxContainerDiv']/h3/a/text()").extract()
-
-    content = response.xpath("//div[@class='boxContainerDiv']/ul").extract()
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",content)
+    title = response.xpath("//h2[@class='ExHeading ExHeading--h2 ExDetail-h2']/text()").extract_first()
+    #print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",title)
+    content = response.xpath("//li[@class='ExDetail-descriptionStep']/text()").extract()
+    #print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",content)
+    return {"title":title, "content":content}
     #print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", content)
-    for x,y in zip(title, content):
-        #print(x)
-        yield {"title":x, "content":y}
-    """body_text = response.css(".body-text")
-        for text in body_text:
-            text_content = text.css("::text").extract()
-            if type(text_content) == list:
-                text_content = u"".join(text_content)
-            content += text_content + " "
-
-        title = response.css("h1 ::text").extract_first()
-        yield {"url": url, "id": id, "title": title, "content": content}
-        """
+    #for x,y in zip(title, content):
+    #    #print(x)
+    #    yield {"title":x, "content":y}
+    

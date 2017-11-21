@@ -11,22 +11,22 @@ class Article:
         self._content_preprocess()
     
     def _content_preprocess(self):
-        self.content = re.sub("<[^>]*>", "",self.content)
-        self.content = self.content.replace("\t", "")
-        self.content = self.content[1:-2]
+        #self.title = re.sub("<[^>]*>", "",self.title)
+        self.title = self.title.replace(r"/", "|")
+        self.title = self.title[1:-2].strip()
 
     def save(self, folder):
-        filename = "%s.txt" % self.title
+        filename = r"%s.txt" % self.title
         filepath = os.path.join(folder, filename)
         with open(filepath, "w") as f:
             f.write(self.title+"\n")
-            f.write(self.content)
+            f.write("\n".join(self.content))
 
 if __name__ == '__main__':
     folder = dirname(dirname(sys.argv[0]))
     data_folder = os.path.join(folder, "data")
     js_files = os.path.join(folder, "raw_data", "data.jl")
-    lines = open(js_files).readlines()
+    lines = open(js_files, "r").readlines()
     articles = [Article(json.loads(line)) for line in lines]
     indexed_files = os.listdir(os.path.join(folder, "data"))
     indexed_articles = [f.split(".")[0] for f in indexed_files]
