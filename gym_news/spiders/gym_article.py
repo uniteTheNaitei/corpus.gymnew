@@ -18,7 +18,9 @@ class GymArticleSpider(CrawlSpider):
     #print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",title)
     content = response.xpath("//li[@class='ExDetail-descriptionStep']/text()").extract()
     #print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",content)
-    return {"title":title, "content":content}
+    img_m = response.xpath("//img[@class='ExImg ExDetail-img js-ex-enlarge']/@data-large-photo").extract_first()
+    img_l = response.xpath("//img[@class='ExImg ExDetail-img js-ex-enlarge']/@src").extract_first()
+    return {"title":title, "content":content, "img":[img_m, img_l]}
     #print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", content)
     #for x,y in zip(title, content):
     #    #print(x)
